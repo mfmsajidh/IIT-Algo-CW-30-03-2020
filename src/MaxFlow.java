@@ -2,45 +2,30 @@ import java.lang.*;
 import java.util.LinkedList;
 
 public class MaxFlow {
+
     static final int VERTICES = 6; // Number of vertices in graph
 
-    /**
-     *  Returns true if there is a path from source 's' to sink
-     *  't' in residual graph. Also fills parent[] to store the
-     *  path
-     * @param rGraph residualGraph
-     * @param s source node
-     * @param t sink node
-     * @param parent parent node
-     * @return true if sink is reached
-     */
-    boolean breadthFirstSearch(int[][] rGraph, int s, int t, int[] parent) {
-        // Create a visited array and mark all vertices as not visited
-        boolean[] visited = new boolean[VERTICES];
-        for (int i = 0; i< VERTICES; ++i)
-            visited[i]=false;
+    public static void main(String[] args) {
 
-        // Create a queue, enqueue source vertex and mark source vertex as visited
-        LinkedList<Integer> queue = new LinkedList<>();
-        queue.add(s);
-        visited[s] = true;
-        parent[s]=-1;
+        // Creates a graph (Adjacency matrix)
+        int[][] graph = new int[][]{
+                {0, 10, 8, 0, 0, 0},
+                {0, 0, 5, 5, 0, 0},
+                {0, 4, 0, 0, 10, 0},
+                {0, 0, 7, 0, 6, 3},
+                {0, 0, 0, 10, 0, 14},
+                {0, 0, 0, 0, 0, 0}
+        };
 
-        // Standard Breadth First Search Loop
-        while (queue.size()!=0) {
-            int u = queue.poll();
+        int sourceNode = 0;
+        int sinkNode = VERTICES-1;
 
-            for (int v = 0; v< VERTICES; v++) {
-                if (!visited[v] && rGraph[u][v] > 0) {
-                    queue.add(v);
-                    parent[v] = u;
-                    visited[v] = true;
-                }
-            }
-        }
+        MaxFlow maxFlow = new MaxFlow();
+        Stopwatch stopwatch = new Stopwatch();
 
-        // If we reached sink in BFS starting from source, then return true, else false
-        return (visited[t]);
+        System.out.println("The maximum possible flow is " + maxFlow.fordFulkerson(graph, sourceNode, sinkNode));
+        System.out.println("Time taken to complete in seconds: " + stopwatch.elapsedTime());
+
     }
 
     /**
@@ -99,26 +84,42 @@ public class MaxFlow {
         return max_flow;
     }
 
-    public static void main(String[] args) {
+    /**
+     *  Returns true if there is a path from source 's' to sink
+     *  't' in residual graph. Also fills parent[] to store the
+     *  path
+     * @param rGraph residualGraph
+     * @param s source node
+     * @param t sink node
+     * @param parent parent node
+     * @return true if sink is reached
+     */
+    boolean breadthFirstSearch(int[][] rGraph, int s, int t, int[] parent) {
+        // Create a visited array and mark all vertices as not visited
+        boolean[] visited = new boolean[VERTICES];
+        for (int i = 0; i< VERTICES; ++i)
+            visited[i]=false;
 
-        // Creates a graph (Adjacency matrix)
-        int[][] graph = new int[][]{
-                {0, 10, 8, 0, 0, 0},
-                {0, 0, 5, 5, 0, 0},
-                {0, 4, 0, 0, 10, 0},
-                {0, 0, 7, 0, 6, 3},
-                {0, 0, 0, 10, 0, 14},
-                {0, 0, 0, 0, 0, 0}
-        };
+        // Create a queue, enqueue source vertex and mark source vertex as visited
+        LinkedList<Integer> queue = new LinkedList<>();
+        queue.add(s);
+        visited[s] = true;
+        parent[s]=-1;
 
-        int sourceNode = 0;
-        int sinkNode = VERTICES-1;
+        // Standard Breadth First Search Loop
+        while (queue.size()!=0) {
+            int u = queue.poll();
 
-        MaxFlow maxFlow = new MaxFlow();
-        Stopwatch stopwatch = new Stopwatch();
+            for (int v = 0; v< VERTICES; v++) {
+                if (!visited[v] && rGraph[u][v] > 0) {
+                    queue.add(v);
+                    parent[v] = u;
+                    visited[v] = true;
+                }
+            }
+        }
 
-        System.out.println("The maximum possible flow is " + maxFlow.fordFulkerson(graph, sourceNode, sinkNode));
-        System.out.println("Time taken to complete in seconds: " + stopwatch.elapsedTime());
-
+        // If we reached sink in BFS starting from source, then return true, else false
+        return (visited[t]);
     }
 }
