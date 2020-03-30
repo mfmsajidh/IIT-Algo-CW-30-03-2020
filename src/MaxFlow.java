@@ -37,7 +37,7 @@ public class MaxFlow {
      */
     int fordFulkerson(int[][] graph, int s, int t)
     {
-        int u, v;
+        int row, column;
 
         // Create a residual graph and fill the residual graph
         // with given capacities in the original graph as
@@ -49,9 +49,9 @@ public class MaxFlow {
         // not)
         int[][] rGraph = new int[VERTICES][VERTICES];
 
-        for (u = 0; u < VERTICES; u++)
-            for (v = 0; v < VERTICES; v++)
-                rGraph[u][v] = graph[u][v];
+        for (row = 0; row < VERTICES; row++)
+            for (column = 0; column < VERTICES; column++)
+                rGraph[row][column] = graph[row][column];
 
         // This array is filled by BFS and to store path
         int[] parent = new int[VERTICES];
@@ -64,16 +64,16 @@ public class MaxFlow {
             // along the path filled by BFS. Or we can say
             // find the maximum flow through the path found.
             int path_flow = Integer.MAX_VALUE;
-            for (v=t; v!=s; v=parent[v]) {
-                u = parent[v];
-                path_flow = Math.min(path_flow, rGraph[u][v]);
+            for (column=t; column!=s; column=parent[column]) {
+                row = parent[column];
+                path_flow = Math.min(path_flow, rGraph[row][column]);
             }
 
             // update residual capacities of the edges and reverse edges along the path
-            for (v=t; v != s; v=parent[v]) {
-                u = parent[v];
-                rGraph[u][v] -= path_flow;
-                rGraph[v][u] += path_flow;
+            for (column=t; column != s; column=parent[column]) {
+                row = parent[column];
+                rGraph[row][column] -= path_flow;
+                rGraph[column][row] += path_flow;
             }
 
             // Add path flow to overall flow
@@ -91,10 +91,10 @@ public class MaxFlow {
      * @param rGraph residualGraph
      * @param s source node
      * @param t sink node
-     * @param parent parent node
+     * @param parentNode parent node
      * @return true if sink is reached
      */
-    boolean breadthFirstSearch(int[][] rGraph, int s, int t, int[] parent) {
+    boolean breadthFirstSearch(int[][] rGraph, int s, int t, int[] parentNode) {
         // Create a visited array and mark all vertices as not visited
         boolean[] visited = new boolean[VERTICES];
         for (int i = 0; i< VERTICES; ++i)
@@ -104,7 +104,7 @@ public class MaxFlow {
         LinkedList<Integer> queue = new LinkedList<>();
         queue.add(s);
         visited[s] = true;
-        parent[s]=-1;
+        parentNode[s]=-1;
 
         // Standard Breadth First Search Loop
         while (queue.size()!=0) {
@@ -113,7 +113,7 @@ public class MaxFlow {
             for (int v = 0; v< VERTICES; v++) {
                 if (!visited[v] && rGraph[u][v] > 0) {
                     queue.add(v);
-                    parent[v] = u;
+                    parentNode[v] = u;
                     visited[v] = true;
                 }
             }
