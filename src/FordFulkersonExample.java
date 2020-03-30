@@ -14,8 +14,6 @@
  * <p>Run: $ java -cp src/main/java
  * com/williamfiset/algorithms/graphtheory/networkflow/examples/FordFulkersonExample
  */
-package com.williamfiset.algorithms.graphtheory.networkflow.examples;
-
 import static java.lang.Math.min;
 
 import java.util.ArrayList;
