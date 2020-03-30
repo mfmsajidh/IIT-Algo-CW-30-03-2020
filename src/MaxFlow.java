@@ -114,10 +114,10 @@ public class MaxFlow {
         int sourceNode = 0;
         int sinkNode = VERTICES-1;
 
-        MaxFlow m = new MaxFlow();
+        MaxFlow maxFlow = new MaxFlow();
         Stopwatch stopwatch = new Stopwatch();
 
-        System.out.println("The maximum possible flow is " + m.fordFulkerson(graph, sourceNode, sinkNode));
+        System.out.println("The maximum possible flow is " + maxFlow.fordFulkerson(graph, sourceNode, sinkNode));
         System.out.println("Time taken to complete in seconds: " + stopwatch.elapsedTime());
 
     }
